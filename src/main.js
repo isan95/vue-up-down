@@ -1,32 +1,36 @@
+import Vue from 'vue';
+import App from './App.vue';
+import  { router }  from './router';
+import store from './store';
+import VeeValidate from 'vee-validate';
+import Vuex from 'vuex';
 
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import axios from 'axios'
+import { BootstrapVue, BootstrapVueIcons, IconsPlugin } from 'bootstrap-vue';
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css';
+/*
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {
+  faHome,
+  faUser,
+  faUserPlus,
+  faSignInAlt,
+  faSignOutAlt,
+  faCloudUploadAlt
+} from '@fortawesome/free-solid-svg-icons';
+*/
+//library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faCloudUploadAlt);
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-
-axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'https://gabbyblog.herokuapp.com/';
-
-axios.interceptors.response.use(undefined, function (error) {
-  if (error) {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-  
-        originalRequest._retry = true;
-        store.dispatch('LogOut')
-        return router.push('/login')
-    }
-  }
-});
+Vue.use(VeeValidate);
+Vue.use(Vuex);
+Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons);
+//Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false
 

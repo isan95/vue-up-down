@@ -7,20 +7,31 @@
                     <div class="card-heading bg-ligth"></div>
                     <div class="card-body">
                         <h2 class="title">Iniciar sesión</h2>
-                        <form @submit.prevent="submit">
+                        <form name="form" @submit.prevent="handleLogin">
                             <div class="input-group">
                                 
-                                <input class="input--style-3" type="text" name="username" v-model="form.username" placeholder="Nombre de usuario">
+                                <input class="input--style-3" type="text" name="username" v-model="user.username" v-validate="'required'" placeholder="Nombre de usuario" />
+                                <div v-if="errors.has('username')" class="alert alert-danger" role="alert">El nombre de usuario es requerido</div>
+
                             </div>
 
                             <div class="input-group">
-                                <input class="input--style-3" type="password" placeholder="Contraseña" v-model="form.password" name="password">
+
+                                <input class="input--style-3" type="password" placeholder="Contraseña" v-model="user.password" v-validate="'required'" name="password">
+                                <div v-if="errors.has('password')" class="alert alert-danger" role="alert">La contraseña es requerida</div>
+
                             </div>
                             <div class="p-t-10">
-                                <button class="btn btn--pill btn--green" type="submit">Entrar</button>
+                                <button class="btn btn--pill btn--green">
+                                  <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+                                  <span>Entrar</span>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                              <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
                             </div>
                         </form>
-                        <p v-if="showError" id="error">Nombre de usuario o contraseña incorrectos</p>
+                        <!-- <p v-if="showError" id="error">Nombre de usuario o contraseña incorrectos</p> -->
                     </div>
                 </div>
             </div>
@@ -30,37 +41,56 @@
 </template>
 
 <script>
-    import { mapActions } from "vuex";
+    import User from '../models/user';
+
     export default {
-      name: "Login",
+      name: 'Login',
       components: {},
       data() {
         return {
-          form: {
-            username: "",
-            password: "",
-          },
-          showError: false
+          user: new User('',''),
+          loading: false,
+          message: ''
         };
       },
-      methods: {
-        ...mapActions(["LogIn"]),
-        async submit() {
-          const User = new FormData();
-          User.append("username", this.form.username);
-          User.append("password", this.form.password);
-          try {
-              await this.LogIn(User);
-              this.$router.push("/");
-              this.showError = false
-          } catch (error) {
-            this.showError = true
-          }
-        },
-      },
-    };
 
-    
+    computed: {
+      loggedIn() {
+        return this.$store.state.auth.status.loggedIn;
+      }
+    },
+    created() {
+      if (this.loggedIn) {
+        this.$router.push('/about');
+      }
+    },
+    methods: {
+       handleLogin() {
+      this.loading = true;
+      this.$validator.validateAll().then(isValid => {
+        if (!isValid) {
+          this.loading = false;
+          return;
+        }
+
+        if (this.user.username && this.user.password) {
+          this.$store.dispatch('auth/login', this.user).then(
+            () => {
+              this.$router.push('/');
+            },
+            error => {
+              this.loading = false;
+              this.message =
+                (error.response && error.response.data && error.response.data.message) ||
+                error.message ||
+                error.toString();
+            }
+          );
+        }
+      });
+    }
+  }  
+};    
 </script>
 
 <style scoped>
@@ -68,6 +98,7 @@
 /* ==========================================================================
    #FONT
    ========================================================================== */
+
 .font-robo {
   font-family: "Roboto", "Arial", "Helvetica Neue", sans-serif;
 }
@@ -85,10 +116,11 @@
 /* ==========================================================================
    #BOX-SIZING
    ========================================================================== */
-/**
+/*
  * More sensible default box-sizing:
  * css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice
  */
+
 html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -112,6 +144,7 @@ html {
 /**
  * A very simple reset that sits on top of Normalize.css.
  */
+ 
 body,
 h1, h2, h3, h4, h5, h6,
 blockquote, p, pre,
@@ -126,6 +159,7 @@ fieldset, legend {
 /**
  * Remove trailing margins from nested lists.
  */
+ 
 li > ol,
 li > ul {
   margin-bottom: 0;
@@ -136,6 +170,7 @@ li > ul {
  * 1. Reset Chrome and Firefox behaviour which sets a `min-width: min-content;`
  *    on fieldsets.
  */
+ 
 fieldset {
   min-width: 0;
   /* [1] */
@@ -151,6 +186,7 @@ button {
 /* ==========================================================================
    #PAGE WRAPPER
    ========================================================================== */
+
 .page-wrapper {
   min-height: 100vh;
 }
@@ -223,6 +259,7 @@ a.bg-secondary:focus,a.bg-secondary:hover,button.bg-secondary:focus,button.bg-se
 /* ==========================================================================
    #WRAPPER
    ========================================================================== */
+
 .wrapper {
   margin: 0 auto;
 }
@@ -242,6 +279,7 @@ a.bg-secondary:focus,a.bg-secondary:hover,button.bg-secondary:focus,button.bg-se
 /* ==========================================================================
    #BUTTON
    ========================================================================== */
+
 .btn {
   display: inline-block;
   line-height: 40px;
@@ -283,6 +321,7 @@ input[type="date" i] {
 /* ==========================================================================
    #FORM
    ========================================================================== */
+
 input {
   outline: none;
   margin: 0;
@@ -335,6 +374,7 @@ input {
 /* ==========================================================================
    #TITLE
    ========================================================================== */
+
 .title {
   font-size: 24px;
   color: #fff;
@@ -345,6 +385,7 @@ input {
 /* ==========================================================================
    #CARD
    ========================================================================== */
+
 .card {
   overflow: hidden;
   -webkit-border-radius: 3px;
