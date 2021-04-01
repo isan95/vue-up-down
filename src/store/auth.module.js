@@ -52,10 +52,12 @@ export const auth = {
       state.user = null;
     },
     registerSuccess(state) {
-      state.status.loggedIn = false;
+      state.status.loggedIn = true;
+      //state.user = user;
     },
     registerFailure(state) {
-      state.status.loggedIn = false;
+      state.status.loggedIn = true;
+      //state.user = user;
     }
   }
 };

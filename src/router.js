@@ -18,6 +18,13 @@ export const router = new VueRouter({
       path: '/login',
       component: () => import('./views/Login.vue'),
     },
+
+    {
+      path: '/register',
+      name : 'Registro',
+      component: () => import('./views/Register.vue'),
+    },
+
     {
       path: '/about',
       name: 'About',
@@ -30,12 +37,11 @@ export const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/login', '/register', '/about'];
+  const publicPages = ['/login', 'register','/about'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('user');
+  
 
-  // trying to access a restricted page + not logged in
-  // redirect to login page
   if (authRequired && !loggedIn) {
     next('/login');
   } else {

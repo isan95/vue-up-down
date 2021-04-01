@@ -31,6 +31,9 @@
             <router-link to="/" class="nav-link">Recientes</router-link>
             <!-- <a class="nav-link">Recientes</a> -->
           </li>
+          <li v-if="isAdmin">
+            <router-link to="register" class="nav-link">Crear usuario</router-link>
+          </li>
           <li v-if="currentUser">
             <button @click.prevent="logOut" class="nav-link">
               Cerrar sesion
@@ -42,7 +45,9 @@
             <router-link to="/">Login</router-link>
           </li>
         </ul>
+
         <button
+          v-if="!isUser"
           id="btn-modal-upload"
           class="btn btn-outline-success my-2 my-sm-0"
           type="button"
@@ -100,9 +105,34 @@ import Upload from './Upload.vue';
 export default {
   components: { Upload },
   name: "NavBar",
+
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+
+    isUser(){
+      
+      if(this.currentUser && this.currentUser.roles){
+        return this.currentUser.roles.includes('ROLE_USER');
+      }
+      return false;
+    },
+
+    isModerator(){
+      
+      if(this.currentUser && this.currentUser.roles){
+        return this.currentUser.roles.includes('ROLE_MODERATOR');
+      }
+      return false;
+    },
+
+    isAdmin(){
+      
+      if(this.currentUser && this.currentUser.roles){
+        return this.currentUser.roles.includes('ROLE_ADMIN');
+      }
+      return false;
     },
   },
   methods: {
@@ -111,6 +141,7 @@ export default {
       this.$router.push("/login");
     },
   },
+
 };
 </script>
 

@@ -1,18 +1,24 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://javaupdown-env.eba-i5cemnij.us-east-2.elasticbeanstalk.com/api/file/';
+const API_URL = 'http://localhost:5000/api/file/';
 
 class FileService {
   
    
-  fileUpload(file, uploadProgress) {
+  fileUpload(files) {
 
-    let formData = new FormData();
-    formData.append("file", file);
-
+    let formUpload = document.getElementById("form-upload");
+    let formData = new FormData(formUpload);
+    let file;
+    for(var i=0; i<files.length ;i++){
+      file = files[i];
+      console.log(file);
+      formData.append('file',file);
+    }
+    console.log(formData);
     return axios.post(API_URL + 'upload',  formData,
-    { headers: authHeader(), 'Content-Type':'multipart/form-data' }, uploadProgress);
+    { headers: authHeader(), 'Content-Type':'multipart/form-data' });
   }; 
 
   listFileUploaded(){
@@ -22,8 +28,8 @@ class FileService {
 
  
 
-  downloadFile(fileKey){
-    return axios.get(API_URL+'download/'+fileKey, {headers: authHeader(), responseType: 'blob'});
+  downloadFile(filename){
+    return axios.get(API_URL+'download/'+filename, {headers: authHeader(), responseType: 'blob'});
     
   }
 }

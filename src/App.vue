@@ -330,11 +330,13 @@
 		-webkit-flex-wrap: wrap;
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
+		margin-top: 7rem;
 	}
 
 		.thumbnails .box {
-			margin: 0 1em 2em 1em;
+			margin: 0 0.5em 1em 0.5em;
 			width: 30%;
+			padding: 1.5rem;
 		}
 
 			@media screen and (max-width: 1280px) {
@@ -569,6 +571,7 @@
 
 		.box .image.fit {
 			margin: 0;
+			padding-right: 22rem;
 		}
 
 		.box .image img {
@@ -955,7 +958,7 @@
 		font-weight: 400;
 		height: 2.85em;
 		line-height: 2.95em;
-		padding: 0 1.5em;
+		padding: 4em,4em,4em;
 		text-align: center;
 		text-decoration: none;
 		white-space: nowrap;

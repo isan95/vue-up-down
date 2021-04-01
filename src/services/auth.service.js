@@ -1,6 +1,7 @@
 import axios from 'axios';
+import authHeader from './auth-header';
 
-const API_URL = 'http://javaupdown-env.eba-i5cemnij.us-east-2.elasticbeanstalk.com/api/auth/';
+const API_URL = 'http://localhost:5000/api/auth/';
 
 class AuthService {
     
@@ -21,6 +22,16 @@ class AuthService {
 
   logout() {
     localStorage.removeItem('user');
+  }
+
+  register(user) {
+    console.log(user);
+    return axios.post(API_URL + 'register',{
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      role: user.role,
+    }, { headers: authHeader()});
   }
 }
 
