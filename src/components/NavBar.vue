@@ -32,14 +32,11 @@
             <!-- <a class="nav-link">Recientes</a> -->
           </li>
           <li v-if="isAdmin">
-            <router-link to="register" class="nav-link">Crear usuario</router-link>
+            <router-link to="register" class="nav-link"
+              >Crear usuario</router-link
+            >
           </li>
-          <li v-if="currentUser">
-            <button @click.prevent="logOut" class="nav-link">
-              Cerrar sesion
-            </button>
-            <!-- <router-link @click="logout" class="nav-link">Logout</router-link> -->
-          </li>
+
           <li v-else>
             <router-link to="/">Register</router-link> |
             <router-link to="/">Login</router-link>
@@ -67,6 +64,35 @@
             Buscar
           </button>
         </form>
+
+        <div class="dropdown-user dropdown">
+          <Button
+            class="dropdown-toggle btn btn-link"
+            type="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+              {{username2}}</span
+            >
+            <img
+              id="img-profile"
+              class="img-profile rounded-circle"
+              src="../assets/images/iconfinder_00-ELASTOFONT-STORE-READY_user-circle_2703062.png"
+            />
+          </Button>
+          <div class="dropdown-menu bg-dark" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="">
+              Perfil
+            </a>
+
+            <div class="dropdown-divider"></div>
+            <button id = "button-logout" v-if="currentUser" @click.prevent="logOut" class="dropdown-item bg-dark" href="">
+              Cerrar sesion
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
     <div
@@ -93,7 +119,6 @@
           <div class="modal-body">
             <Upload />
           </div>
-          
         </div>
       </div>
     </div>
@@ -101,36 +126,36 @@
 </template>
 
 <script>
-import Upload from './Upload.vue';
+import Upload from "./Upload.vue";
 export default {
   components: { Upload },
   name: "NavBar",
+  data() {
+    return { username2 : this.$store.state.auth.user.username }
+  },
 
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
     },
 
-    isUser(){
-      
-      if(this.currentUser && this.currentUser.roles){
-        return this.currentUser.roles.includes('ROLE_USER');
+    isUser() {
+      if (this.currentUser && this.currentUser.roles) {
+        return this.currentUser.roles.includes("ROLE_USER");
       }
       return false;
     },
 
-    isModerator(){
-      
-      if(this.currentUser && this.currentUser.roles){
-        return this.currentUser.roles.includes('ROLE_MODERATOR');
+    isModerator() {
+      if (this.currentUser && this.currentUser.roles) {
+        return this.currentUser.roles.includes("ROLE_MODERATOR");
       }
       return false;
     },
 
-    isAdmin(){
-      
-      if(this.currentUser && this.currentUser.roles){
-        return this.currentUser.roles.includes('ROLE_ADMIN');
+    isAdmin() {
+      if (this.currentUser && this.currentUser.roles) {
+        return this.currentUser.roles.includes("ROLE_ADMIN");
       }
       return false;
     },
@@ -141,7 +166,6 @@ export default {
       this.$router.push("/login");
     },
   },
-
 };
 </script>
 
@@ -160,84 +184,12 @@ export default {
 html,
 body,
 div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
 a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
 ol,
 ul,
 li,
-fieldset,
 form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+nav {
   margin: 0;
   padding: 0;
   border: 0;
@@ -246,17 +198,7 @@ video {
   vertical-align: baseline;
 }
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
+nav {
   display: block;
 }
 
@@ -267,19 +209,6 @@ body {
 ol,
 ul {
   list-style: none;
-}
-
-blockquote,
-q {
-  quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: "";
-  content: none;
 }
 
 body {
@@ -334,8 +263,7 @@ body.is-loading *:after {
 
 body,
 input,
-select,
-textarea {
+select {
   color: rgba(255, 255, 255, 0.75);
   font-family: "Source Sans Pro", sans-serif;
   font-size: 14pt;
@@ -346,8 +274,7 @@ textarea {
 @media screen and (max-width: 1680px) {
   body,
   input,
-  select,
-  textarea {
+  select {
     font-size: 11pt;
   }
 }
@@ -355,8 +282,7 @@ textarea {
 @media screen and (max-width: 1280px) {
   body,
   input,
-  select,
-  textarea {
+  select {
     font-size: 11pt;
   }
 }
@@ -364,8 +290,7 @@ textarea {
 @media screen and (max-width: 980px) {
   body,
   input,
-  select,
-  textarea {
+  select {
     font-size: 12pt;
   }
 }
@@ -373,8 +298,7 @@ textarea {
 @media screen and (max-width: 736px) {
   body,
   input,
-  select,
-  textarea {
+  select {
     font-size: 12pt;
   }
 }
@@ -382,8 +306,7 @@ textarea {
 @media screen and (max-width: 480px) {
   body,
   input,
-  select,
-  textarea {
+  select {
     font-size: 12pt;
   }
 }
@@ -402,17 +325,6 @@ a {
 a:hover {
   color: #fff;
   border: none;
-}
-
-strong,
-b {
-  color: #fff;
-  font-weight: 400;
-}
-
-em,
-i {
-  font-style: italic;
 }
 
 p {
@@ -461,59 +373,6 @@ h6 {
   font-size: 0.7em;
 }
 
-sub {
-  font-size: 0.8em;
-  position: relative;
-  top: 0.5em;
-}
-
-sup {
-  font-size: 0.8em;
-  position: relative;
-  top: -0.5em;
-}
-
-blockquote {
-  border-left: solid 4px rgba(144, 144, 144, 0.25);
-  font-style: italic;
-  margin: 0 0 2em 0;
-  padding: 0.5em 0 0.5em 2em;
-}
-
-code {
-  background: rgba(144, 144, 144, 0.075);
-  border-radius: 4px;
-  border: solid 1px rgba(144, 144, 144, 0.25);
-  font-family: "Courier New", monospace;
-  font-size: 0.9em;
-  margin: 0 0.25em;
-  padding: 0.25em 0.65em;
-}
-
-pre {
-  -webkit-overflow-scrolling: touch;
-  font-family: "Courier New", monospace;
-  font-size: 0.9em;
-  margin: 0 0 2em 0;
-}
-
-pre code {
-  display: block;
-  line-height: 1.75;
-  padding: 1em 1.5em;
-  overflow-x: auto;
-}
-
-hr {
-  border: 0;
-  border-bottom: solid 1px rgba(144, 144, 144, 0.25);
-  margin: 2em 0;
-}
-
-hr.major {
-  margin: 3em 0;
-}
-
 .align-left {
   text-align: left;
 }
@@ -526,94 +385,15 @@ hr.major {
   text-align: right;
 }
 
-/* Section/Article */
-
-section.special,
-article.special {
-  text-align: center;
-}
-
-header p {
-  color: rgba(255, 255, 255, 0.5);
-  position: relative;
-  margin: 0 0 1.5em 0;
-}
-
-header h2 + p {
-  font-size: 1.25em;
-  margin-top: -1em;
-}
-
-header h3 + p {
-  font-size: 1.1em;
-  margin-top: -0.8em;
-}
-
-header h4 + p,
-header h5 + p,
-header h6 + p {
-  font-size: 0.9em;
-  margin-top: -0.6em;
-}
-
-/* Box */
-
-.thumbnails {
-  display: -moz-flex;
-  display: -webkit-flex;
-  display: -ms-flex;
-  display: flex;
-  -moz-align-items: stretch;
-  -webkit-align-items: stretch;
-  -ms-align-items: stretch;
-  align-items: stretch;
-  -moz-justify-content: center;
-  -webkit-justify-content: center;
-  -ms-justify-content: center;
-  justify-content: center;
-  -moz-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-
-.thumbnails .box {
-  margin: 0 1em 2em 1em;
-  width: 30%;
-}
-
-@media screen and (max-width: 1280px) {
-  .thumbnails .box {
-    width: 45%;
-  }
-}
-
-@media screen and (max-width: 736px) {
-  .thumbnails .box {
-    width: 100%;
-  }
-}
-
-/* Form */
-
 form {
   margin: 0 0 2em 0;
-}
-
-label {
-  color: #fff;
-  display: block;
-  font-size: 0.9em;
-  font-weight: 400;
-  margin: 0 0 1em 0;
 }
 
 input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="tel"],
-select,
-textarea {
+select {
   -moz-appearance: none;
   -webkit-appearance: none;
   -ms-appearance: none;
@@ -634,8 +414,7 @@ input[type="text"]:invalid,
 input[type="password"]:invalid,
 input[type="email"]:invalid,
 input[type="tel"]:invalid,
-select:invalid,
-textarea:invalid {
+select:invalid {
   box-shadow: none;
 }
 
@@ -686,10 +465,6 @@ input[type="password"],
 input[type="email"],
 select {
   height: 2.75em;
-}
-
-textarea {
-  padding: 0.75em 1em;
 }
 
 input[type="checkbox"],
@@ -1084,20 +859,6 @@ ul.actions.fit.small li {
   }
 }
 
-dl {
-  margin: 0 0 2em 0;
-}
-
-dl dt {
-  display: block;
-  font-weight: 400;
-  margin: 0 0 1em 0;
-}
-
-dl dd {
-  margin-left: 2em;
-}
-
 /* Button */
 
 input[type="submit"],
@@ -1330,66 +1091,11 @@ button.style3:active,
   }
 }
 
-/* Main */
-
-#main {
-  padding: 4em 0 2em 0;
+.dropdown-user {
+  margin-left: 20px;
 }
 
-@media screen and (max-width: 736px) {
-  #main {
-    padding: 3em 0 1em 0;
-  }
-}
-
-#main .inner {
-  width: 90%;
-  max-width: 80em;
-  margin: 0 auto;
-}
-
-@media screen and (max-width: 480px) {
-  #main .inner {
-    width: 95%;
-  }
-}
-
-/* Footer */
-
-#footer {
-  padding: 4em 0 2em 0;
-  background-color: #1b1b1f;
-  text-align: center;
-}
-
-#footer .inner {
-  width: 50%;
-  margin: 0 auto;
-}
-
-@media screen and (max-width: 980px) {
-  #footer .inner {
-    width: 75%;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  #footer .inner {
-    width: 90%;
-  }
-}
-
-#footer .copyright {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.9em;
-  margin: 0 0 2em 0;
-  padding: 0;
-  text-align: center;
-}
-
-@media screen and (max-width: 736px) {
-  #footer {
-    padding: 3em 0 1em 0;
-  }
-}
+/*#button-logout{
+  background-color: #e7e7e7; color: black;
+}*/
 </style>

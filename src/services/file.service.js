@@ -1,24 +1,27 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:5000/api/file/';
+const API_URL = 'http://localhost:9192/api/file/';
 
 class FileService {
   
    
-  fileUpload(files) {
+  fileUpload(files, date) {
 
     let formUpload = document.getElementById("form-upload");
     let formData = new FormData(formUpload);
     let file;
-    for(var i=0; i<files.length ;i++){
+    /*for(var i=0; i<files.length ;i++){
       file = files[i];
       console.log(file);
       formData.append('file',file);
-    }
+    }*/
+    formData.append('files', files);
+    formData.append('expirationDate', date);
+
     console.log(formData);
     return axios.post(API_URL + 'upload',  formData,
-    { headers: authHeader(), 'Content-Type':'multipart/form-data' });
+    { headers: authHeader()});
   }; 
 
   listFileUploaded(){
